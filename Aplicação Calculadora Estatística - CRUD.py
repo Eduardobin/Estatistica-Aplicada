@@ -149,6 +149,10 @@ def iniciar():
     
 
 def insert_manual():
+    
+    
+
+
 
     #Tela2
     Tela_2 = Tk()
