@@ -1,33 +1,7 @@
-import tkinter as tk
-import math
-
-#Entrada de dados!!
-#Import para teste
-lista = [["mercado",1000],["agua, luz e net",500],["aluguel",1500],["lazer",600],["cartão de crédito",1200]]
-#Processamento
-
-#Ordenando
-listord=[]
-L=len(lista)
-v=True
-while L!=0:
-    
-    if v == True:
-        m=0
-    else:
-        m+=1
-    y = lista[m]
-    for i in lista:
-        if y[1]>i[1]:  
-            y=i
-            print('\n\nlista bruta = ', lista)
-            print('lista ordenada = ', listord)
-            print('item que vai ser removido = ', y)
-            v=True
-        if 
-            v=False
-                
-    lista.remove(y)
-    listord.append(y)
-    L=len(lista)
-
+def teste1():
+    a=1
+    b=2
+    def teste2():
+        c=a+b
+        return c
+print(teste1(teste2))

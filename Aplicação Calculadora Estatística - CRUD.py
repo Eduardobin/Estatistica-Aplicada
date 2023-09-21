@@ -144,8 +144,12 @@ def iniciar():
     listaCli.configure(yscroll=scroolLista.set)
     scroolLista.place(relx=0.96, rely=0.025, relwidth=0.04, relheight=0.95)
     Tela_1.mainloop()
+    ## Pegar os valores das variáveis
+
+    
 
 def insert_manual():
+
     #Tela2
     Tela_2 = Tk()
     Tela_2.title("Inserir Dados Manual")
@@ -159,15 +163,14 @@ def insert_manual():
     bt_salvar.place(relx=0.025, rely=0.875,relwidth=0.2,relheight=0.1)
     bt_sair = Button(Tela_2, text='Sair', command=Tela_2.destroy)
     bt_sair.place(relx=0.775, rely=0.875,relwidth=0.2,relheight=0.1)
-    bt_add = Button(Tela_2, text='Adicionar', command=add)
+    bt_add = Button(Tela_2, text='Adicionar', command=add(cod_entry, desc_entry, valor_entry))
     bt_add.place(relx=0.75, rely=0.55,relwidth=0.2,relheight=0.1)
     bt_alterar = Button(Tela_2, text='Alterar')
     bt_alterar.place(relx=0.75, rely=0.65,relwidth=0.2,relheight=0.1)
-    
     ##Frame TreeView
     frame_2 = Frame(Tela_2, bd=4, bg='#dfe3ee', highlightbackground= '#759fe6', highlightthickness=2)
     frame_2.place(relx=0.025, rely=0.225, relwidth=0.7, relheight=0.5)
-    listaCli_2 = ttk.Treeview(frame_2, height=3, columns=("col1","col2","col3"))
+    listaCli_2 = ttk.Treeview(frame_2, height=3, columns=("col1","col2","col3"), show="headings")
     listaCli_2.heading("#0", text="#")
     listaCli_2.heading("#1", text="Descrição")
     listaCli_2.heading("#2", text="Valor")
@@ -194,41 +197,31 @@ def insert_manual():
     valor_entry = Entry(Tela_2)
     valor_entry.place(relx= 0.75, rely= 0.45, relwidth= 0.2)
 
-    ## Pegar os valores das variáveis
-    cod=0
-    desc=""
-    valor=0
-    lista=[]
-    def add():
+    cod = 
+
+    def add(cod, desc, valor):
+        lista=[]
         l=[]
-        cod = cod_entry.get()
-        desc =  desc_entry.get()
-        valor = valor_entry.get()
         l.append(cod)
         l.append(desc)
         l.append(valor)
         lista.append(l)
-    for i in lista:
-        listaCli_2.delete(*listaCli_2.get_children())
-
-        listaCli_2.insert("", END, values=i)
-    
-
-
-
-
-
-
-
+        print(lista)
+        for (i,d,v) in lista:
+            listaCli_2.insert("", "end", values=(i,d,v))
+        return lista
 
 
 
     Tela_2.mainloop()
+iniciar()    
+
+    
         
 
 
 
-iniciar()
+
 
 
 
