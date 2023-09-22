@@ -7,69 +7,67 @@ desc_entry = ""
 valor_entry = ""
 #Entrada de dados!!
 #Import para teste
-# lista = [["mercado",1000],["agua, luz e net",500],["aluguel",1500],["lazer",600],["cartão de crédito",1200]]
+lista = [[1,"mercado",1000],[2,"agua, luz e net",500],[3,"aluguel",1500],[4,"lazer",600],[5,"cartão de crédito",1200]]
 # lista2 = [100,101,100,99,95,90,99,99,96,98,102,124,112,106,108,91,90,90,96,93,102,98,103,103,93,93,92]
-lista=[]
-#Processamento Pareto [str,num]
-def pareto(lista):
-    lr=[]
-    soma=0
-    p=0
-    for i in lista:
-        soma=soma+i[1]
-    for i in lista:
-        r=(i[1]/soma)*100
-        lr.append(r)
-    for i in lr:
-        lista[p].append(i)
-        p+=1
-    print(f'''
-Tabela análise de pareto
-Descrição                   Valor           percent             ac.percert            
-''')
-    ac=0
-    for i in lista:
-        ac=ac+i[2]
-        print(f'''
-{i[0]}                {i[1]}            {i[2]}               {ac}''')
-#Ordenando lista formato [str,num]
-def ordenando (lista):
+#lista=[]
+#Processamento Pareto [cod,str,num]
+def pareto():
+    global lista
+    print(lista)
     listord=[]
     L=len(lista)
     v=True
+    m=0
     while L!=0:
-        m=0
         y = lista[m]
         for i in lista:
-            if y[1]>i[1]: 
+            if y[2]<i[2]: 
                 y=i
         for i in lista:
-            if y[1]<=i[1]:
+            if y[2]>=i[2]:
                 v=True
             else:
-                v=False    
+                v=False
+                m+=1    
         if v == True:        
             lista.remove(y)
             listord.append(y)
+            m=0
         L=len(lista)
     print('lista ordenada = ', listord)
-    return listord
-#Medidas e tabelas de distribuição de frequência
+    lista = listord
+################################    
+    lr=[]
+    lr2=[]
+    soma=0
+    p=0
+    for i in lista:
+        soma=soma+i[2]
+    for i in lista:
+        r=(i[2]/soma)*100
+        lr.append(r)
+        p+=1
+    print(lr)
+#Medidas e tabelas de distribuição de frequência [cod,str,num]
 def dist_freq(lista):
-    lista.sort()
-    tamanho = len(lista)
-    media = sum(lista)/len(lista)
-    maximo = max(lista)
-    minimo = min(lista)
+    newlista=[]
+    for (i,d,v) in lista:
+        newlista.append(v)
+
+    newlista.sort()
+    tamanho = len(newlista)
+    media = sum(newlista)/len(newlista)
+    maximo = max(newlista)
+    minimo = min(newlista)
     amplitude = maximo-minimo
     if tamanho%2 == 0:
-        mediana = (lista[(tamanho//2)-1]+lista[(tamanho//2)])/2
-        quartis1 = (lista[((tamanho//2)//2)-1]+lista[((tamanho//2)//2)])/2
-        quartis3 = (lista[(tamanho*3//4)]+lista[(tamanho*3//4)+1])/2
+        mediana = (newlista[(tamanho//2)-1]+newlista[(tamanho//2)])/2
+        quartis1 = (newlista[((tamanho//2)//2)-1]+newlista[((tamanho//2)//2)])/2
+        quartis3 = (newlista[(tamanho*3//4)]+newlista[(tamanho*3//4)+1])/2
     else:
-        mediana = lista[(tamanho//2)-1]
-        quartis1 = lista[((tamanho//2)//2)-1]
-        quartis3 = lista[(tamanho*3//4)+1]
+        mediana = newlista[(tamanho//2)-1]
+        quartis1 = newlista[((tamanho//2)//2)-1]
+        quartis3 = newlista[(tamanho*3//4)+1]
     iqr = quartis3-quartis1
     outup = quartis3 + 1.5*iqr
     outdown = quartis1 - 1.5*iqr
@@ -81,8 +79,8 @@ def dist_freq(lista):
     moda=[]
     x=0
     y=0
-    for i in lista:
-        x=lista.count(i)
+    for i in newlista:
+        x=newlista.count(i)
         if x > y:
             moda=[]
             y=x
@@ -103,11 +101,24 @@ def dist_freq(lista):
 
 
 #dist_freq(lista2)
-#print(pareto(ordenando(lista)))
+
 
 
 
 def iniciar():
+    global lista
+    global cod_entry 
+    global desc_entry 
+    global valor_entry
+    def atualizar():
+        listaCli.delete(*listaCli.get_children())
+        for (i,d,v) in lista:
+            listaCli.insert("", "end", values=(i,d,v))
+
+
+
+
+
     #Tela1
     Tela_1 = Tk()
     Tela_1.title("Calculadora Estatística")
@@ -126,13 +137,9 @@ def iniciar():
     bt_sql.place(relx=0.125, rely=0.125,relwidth=0.1,relheight=0.05)
     bt_manual = Button(Tela_1, text='Manual', command=insert_manual)
     bt_manual.place(relx=0.225, rely=0.125,relwidth=0.1,relheight=0.05)
-    bt_incluir = Button(Tela_1, text='Incluir')
+    bt_incluir = Button(Tela_1, text='Atualizar', command=atualizar)
     bt_incluir.place(relx=0.025, rely=0.775,relwidth=0.1,relheight=0.05)
-    bt_alterar = Button(Tela_1, text='Alterar')
-    bt_alterar.place(relx=0.125, rely=0.775,relwidth=0.1,relheight=0.05)
-    bt_excluir = Button(Tela_1, text='Excluir')
-    bt_excluir.place(relx=0.225, rely=0.775,relwidth=0.1,relheight=0.05)   
-    bt_pareto = Button(Tela_1, text='Pareto')
+    bt_pareto = Button(Tela_1, text='Pareto',command=pareto)
     bt_pareto.place(relx=0.775, rely=0.45,relwidth=0.15,relheight=0.125)
     bt_medidas = Button(Tela_1, text='Medidas')
     bt_medidas.place(relx=0.775, rely=0.6,relwidth=0.15,relheight=0.125)
@@ -148,19 +155,14 @@ def iniciar():
     scroolLista = Scrollbar(frame_1, orient='vertical')
     listaCli.configure(yscroll=scroolLista.set)
     scroolLista.place(relx=0.96, rely=0.025, relwidth=0.04, relheight=0.95)
-    Tela_1.mainloop()
-    ## Pegar os valores das variáveis
-
     
-
+    Tela_1.mainloop()
 def insert_manual():
+    #Variáveis
     global lista
     global cod_entry 
     global desc_entry 
-    global valor_entry 
-
-
-   
+    global valor_entry
     def add():
         global lista
         global desc_entry 
@@ -169,7 +171,7 @@ def insert_manual():
         lista_tree=[]
         cod=len(lista)+1
         desc=desc_entry.get()
-        valor=valor_entry.get()
+        valor=int(valor_entry.get())
         l.append(cod)
         l.append(desc)
         l.append(valor)
@@ -188,25 +190,15 @@ def insert_manual():
         cod=int(cod_entry.get())
         cod-=1
         desc=desc_entry.get()
-        valor=valor_entry.get()
+        valor=int(valor_entry.get())
         l.append(cod+1)
         l.append(desc)
         l.append(valor)
         lista[cod]=l
         print(lista)
-
-        
-
-
-
-
-     
-
-
-
-
-
-
+        listaCli_2.delete(*listaCli_2.get_children())
+        for (i,d,v) in lista:
+            listaCli_2.insert("", "end", values=(i,d,v))
     #Tela2
     Tela_2 = Tk()
     Tela_2.title("Inserir Dados Manual")
@@ -253,16 +245,9 @@ def insert_manual():
     lb_valor.place(relx= 0.75, rely= 0.4 )
     valor_entry = Entry(Tela_2)
     valor_entry.place(relx= 0.75, rely= 0.45, relwidth= 0.2)
-
-
-
-
+    #Escrever lista 
     for (i,d,v) in lista:
         listaCli_2.insert("", "end", values=(i,d,v))
-
-
-
-
     Tela_2.mainloop()
 iniciar()    
 

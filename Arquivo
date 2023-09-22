@@ -1,7 +1,0 @@
-def teste1():
-    a=1
-    b=2
-    def teste2():
-        c=a+b
-        return c
-print(teste1(teste2))
