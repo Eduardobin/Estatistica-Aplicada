@@ -154,9 +154,11 @@ def iniciar():
     
 
 def insert_manual():
+    global lista
     global cod_entry 
     global desc_entry 
     global valor_entry 
+
 
    
     def add():
@@ -165,15 +167,9 @@ def insert_manual():
         global valor_entry 
         l=[]
         lista_tree=[]
-
-        
-       
-        
-        
         cod=len(lista)+1
         desc=desc_entry.get()
         valor=valor_entry.get()
-
         l.append(cod)
         l.append(desc)
         l.append(valor)
@@ -181,10 +177,29 @@ def insert_manual():
         lista_tree.append(l)
         print(lista)
         print(l)
-        
-
         for (i,d,v) in lista_tree:
             listaCli_2.insert("", "end", values=(i,d,v))
+    def alterar():
+        global lista
+        global cod_entry
+        global desc_entry 
+        global valor_entry
+        l=[]
+        cod=int(cod_entry.get())
+        cod-=1
+        desc=desc_entry.get()
+        valor=valor_entry.get()
+        l.append(cod+1)
+        l.append(desc)
+        l.append(valor)
+        lista[cod]=l
+        print(lista)
+
+        
+
+
+
+
      
 
 
@@ -207,7 +222,7 @@ def insert_manual():
     bt_sair.place(relx=0.775, rely=0.875,relwidth=0.2,relheight=0.1)
     bt_add = Button(Tela_2, text='Adicionar', command=add)
     bt_add.place(relx=0.75, rely=0.55,relwidth=0.2,relheight=0.1)
-    bt_alterar = Button(Tela_2, text='Alterar')
+    bt_alterar = Button(Tela_2, text='Alterar', command=alterar)
     bt_alterar.place(relx=0.75, rely=0.65,relwidth=0.2,relheight=0.1)
     ##Frame TreeView
     frame_2 = Frame(Tela_2, bd=4, bg='#dfe3ee', highlightbackground= '#759fe6', highlightthickness=2)
@@ -239,6 +254,11 @@ def insert_manual():
     valor_entry = Entry(Tela_2)
     valor_entry.place(relx= 0.75, rely= 0.45, relwidth= 0.2)
 
+
+
+
+    for (i,d,v) in lista:
+        listaCli_2.insert("", "end", values=(i,d,v))
 
 
 
