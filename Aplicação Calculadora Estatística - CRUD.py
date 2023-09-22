@@ -1,10 +1,15 @@
 from tkinter import *
 from tkinter import ttk
 #import matplotlib.pyplot as plt 
+# Variáveis Globais
+cod_entry = ""
+desc_entry = ""
+valor_entry = ""
 #Entrada de dados!!
 #Import para teste
-lista = [["mercado",1000],["agua, luz e net",500],["aluguel",1500],["lazer",600],["cartão de crédito",1200]]
-lista2 = [100,101,100,99,95,90,99,99,96,98,102,124,112,106,108,91,90,90,96,93,102,98,103,103,93,93,92]
+# lista = [["mercado",1000],["agua, luz e net",500],["aluguel",1500],["lazer",600],["cartão de crédito",1200]]
+# lista2 = [100,101,100,99,95,90,99,99,96,98,102,124,112,106,108,91,90,90,96,93,102,98,103,103,93,93,92]
+lista=[]
 #Processamento Pareto [str,num]
 def pareto(lista):
     lr=[]
@@ -149,8 +154,41 @@ def iniciar():
     
 
 def insert_manual():
-    
-    
+    global cod_entry 
+    global desc_entry 
+    global valor_entry 
+
+   
+    def add():
+        global lista
+        global desc_entry 
+        global valor_entry 
+        l=[]
+        lista_tree=[]
+
+        
+       
+        
+        
+        cod=len(lista)+1
+        desc=desc_entry.get()
+        valor=valor_entry.get()
+
+        l.append(cod)
+        l.append(desc)
+        l.append(valor)
+        lista.append(l)
+        lista_tree.append(l)
+        print(lista)
+        print(l)
+        
+
+        for (i,d,v) in lista_tree:
+            listaCli_2.insert("", "end", values=(i,d,v))
+     
+
+
+
 
 
 
@@ -167,7 +205,7 @@ def insert_manual():
     bt_salvar.place(relx=0.025, rely=0.875,relwidth=0.2,relheight=0.1)
     bt_sair = Button(Tela_2, text='Sair', command=Tela_2.destroy)
     bt_sair.place(relx=0.775, rely=0.875,relwidth=0.2,relheight=0.1)
-    bt_add = Button(Tela_2, text='Adicionar', command=add(cod_entry, desc_entry, valor_entry))
+    bt_add = Button(Tela_2, text='Adicionar', command=add)
     bt_add.place(relx=0.75, rely=0.55,relwidth=0.2,relheight=0.1)
     bt_alterar = Button(Tela_2, text='Alterar')
     bt_alterar.place(relx=0.75, rely=0.65,relwidth=0.2,relheight=0.1)
@@ -178,8 +216,8 @@ def insert_manual():
     listaCli_2.heading("#0", text="#")
     listaCli_2.heading("#1", text="Descrição")
     listaCli_2.heading("#2", text="Valor")
-    listaCli_2.column("#0", width=10)
-    listaCli_2.column("#1", width=90)
+    listaCli_2.column("#0", width=20)
+    listaCli_2.column("#1", width=80)
     listaCli_2.column("#2", width=50)
     listaCli_2.place(relx=0.01, rely=0.025, relwidth=0.95, relheight=0.95)
     scroolLista = Scrollbar(frame_2, orient='vertical')
@@ -201,19 +239,7 @@ def insert_manual():
     valor_entry = Entry(Tela_2)
     valor_entry.place(relx= 0.75, rely= 0.45, relwidth= 0.2)
 
-    cod = 
 
-    def add(cod, desc, valor):
-        lista=[]
-        l=[]
-        l.append(cod)
-        l.append(desc)
-        l.append(valor)
-        lista.append(l)
-        print(lista)
-        for (i,d,v) in lista:
-            listaCli_2.insert("", "end", values=(i,d,v))
-        return lista
 
 
 
