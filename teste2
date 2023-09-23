@@ -1,33 +1,28 @@
-lista = [["mercado",1000],["agua, luz e net",500],["aluguel",1500],["lazer",600],["cartão de crédito",1200]]
-
-
-
-def ordenando (lista):
-    
-    listord=[]
-    L=len(lista)
-    v=True
-    m=0
-
-    while L!=0:
-        y = lista[m]
-        for i in lista:
-            if y[1]>i[1]: 
-                y=i
-        for i in lista:
-            if y[1]<=i[1]:
-                v=True
-            else:
-                v=False
-                m+=1    
-        if v == True:        
-            lista.remove(y)
-            listord.append(y)
-            m=0
-        L=len(lista)
-    print('lista ordenada = ', listord)
-    return listord
-
-
-
-print(ordenando(lista))
+# #criaçao de diretório
+#         if op == 's':
+#             dir = nome_obra
+#             parentDir = 'C:/Users/Eduardo Bin/PycharmProjects/MarkCamp'
+#             path = os.path.join(parentDir, dir)
+#             # criação da pasta da obra
+#         if not os.path.exists(nome_obra):
+#             os.mkdir(nome_obra)
+#         else:
+#             print('Diretório existente')
+#         # criação dos arquivos txt
+#         if not os.path.exists('cad_obra.txt'):
+#             with open(f'cad_obra.txt', 'x'):
+#                 print('criado o arquivo de cadastro de obra')
+#         with open(f'{nome_obra}/diário.txt', 'w'):
+#             print('criado o arquivo de diário')
+#         with open(f'{nome_obra}/gestores.txt', 'w'):
+#             print('criado o arquivo de gestores')
+#         with open(f'{nome_obra}/medições.txt', 'w'):
+#             print('criado o arquivo de medições')
+#         with open(f'{nome_obra}/aditamentos.txt', 'w'):
+#             print('criado o arquivo de aditamentos')
+#         with open(f'{nome_obra}/dados.txt', 'w'):
+#             print('criado o arquivo de cadastro de obra')
+#         break
+x=' *'
+x=x.split()
+print(x)

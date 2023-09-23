@@ -1,15 +1,19 @@
 from tkinter import *
 from tkinter import ttk
-#import matplotlib.pyplot as plt 
+import os
+import os.path
+import re
 # Variáveis Globais
 cod_entry = ""
 desc_entry = ""
 valor_entry = ""
+lista=[]
+local=""
 #Entrada de dados!!
+    #Entrada TXT
 #Import para teste
-lista = [[1,"mercado",1000],[2,"agua, luz e net",500],[3,"aluguel",1500],[4,"lazer",600],[5,"cartão de crédito",1200]]
-# lista2 = [100,101,100,99,95,90,99,99,96,98,102,124,112,106,108,91,90,90,96,93,102,98,103,103,93,93,92]
-#lista=[]
+# lista = [[1,"mercado",1000],[2,"agua, luz e net",500],[3,"aluguel",1500],[4,"lazer",600],[5,"cartão de crédito",1200]]
+#lista = [[1,'',100],[2,'',101],[3,'',100],[4,'',99],[5,'',95],[6,'',90],[7,'',99],[8,'',99],[9,'',96],[10,'',98],[11,'',102],[12,'',124],[13,'',112],[14,'',106],[15,'',108],[16,'',91],[17,'',90],[18,'',90],[19,'',96],[20,'',93],[21,'',102],[22,'',98],[23,'',103],[24,'',103],[25,'',93],[26,'',93],[27,'',92]]
 #Processamento Pareto [cod,str,num]
 def pareto():
     global lista
@@ -49,11 +53,11 @@ def pareto():
         p+=1
     print(lr)
 #Medidas e tabelas de distribuição de frequência [cod,str,num]
-def dist_freq(lista):
+def dist_freq():
+    global lista
     newlista=[]
-    for (i,d,v) in lista:
-        newlista.append(v)
-
+    for v in lista:
+        newlista.append(v[2])
     newlista.sort()
     tamanho = len(newlista)
     media = sum(newlista)/len(newlista)
@@ -72,7 +76,7 @@ def dist_freq(lista):
     outup = quartis3 + 1.5*iqr
     outdown = quartis1 - 1.5*iqr
     dados_out = []
-    for i in lista:
+    for i in newlista:
         if i > outup or i < outdown:
             dados_out.append(i)
 #moda autoral
@@ -88,6 +92,7 @@ def dist_freq(lista):
         elif x == y:
             if i not in moda:
                 moda.append(i)
+    print('lista ordenada: ',newlista)
     print(media)
     print(maximo)
     print(minimo)
@@ -95,25 +100,56 @@ def dist_freq(lista):
     print(quartis1)
     print(mediana)
     print(quartis3)
-    print(lista)
     print('dados fora: ',dados_out)
     print(moda)
-
-
-#dist_freq(lista2)
-
-
-
-
 def iniciar():
     global lista
     global cod_entry 
     global desc_entry 
     global valor_entry
+    global local
     def atualizar():
         listaCli.delete(*listaCli.get_children())
         for (i,d,v) in lista:
             listaCli.insert("", "end", values=(i,d,v))
+    def txt():
+        global lista
+        global local
+        local = 'txt'
+        with open(f'bd3.txt','r') as txtbd:
+            L1 = []
+            L2 = []
+            L3 = []
+            y = '*'
+            for i in txtbd:
+                L1.append(i.rstrip())
+            for i in L1:
+                i = i.split(",")
+                L2 = i
+                L3.append(L2)
+                print('tamanho',len(L2))
+            if len(L2)==3:
+                L2=[]
+                for i in L3:
+                    L1=[]
+                    L1.append(int(i[0]))
+                    if y in i[1]:
+                        i[1] = ""
+                    L1.append(i[1])
+                    L1.append(int(i[2]))
+                    L2.append(L1)
+                lista = L2
+                print('lista: ',lista)
+            else:
+                cont=1
+                for i in L3:
+                    for m in i:
+                        print('xxx: ',m)
+                        lista.append(cont) 
+                        lista.append('')
+                        lista.append(int(m))
+                        cont+=1
+                print('lista: ',lista)
 
 
 
@@ -131,7 +167,7 @@ def iniciar():
     frame_1 = Frame(Tela_1, bd=4, bg='#dfe3ee', highlightbackground= '#759fe6', highlightthickness=2)
     frame_1.place(relx=0.025, rely=0.225, relwidth=0.7, relheight=0.5)
     #Widgets
-    bt_txt = Button(Tela_1, text='TXT')
+    bt_txt = Button(Tela_1, text='TXT', command=txt)
     bt_txt.place(relx=0.025, rely=0.125,relwidth=0.1,relheight=0.05)
     bt_sql = Button(Tela_1, text='SQL')
     bt_sql.place(relx=0.125, rely=0.125,relwidth=0.1,relheight=0.05)
@@ -141,7 +177,7 @@ def iniciar():
     bt_incluir.place(relx=0.025, rely=0.775,relwidth=0.1,relheight=0.05)
     bt_pareto = Button(Tela_1, text='Pareto',command=pareto)
     bt_pareto.place(relx=0.775, rely=0.45,relwidth=0.15,relheight=0.125)
-    bt_medidas = Button(Tela_1, text='Medidas')
+    bt_medidas = Button(Tela_1, text='Medidas',command=dist_freq)
     bt_medidas.place(relx=0.775, rely=0.6,relwidth=0.15,relheight=0.125)
     #TreeView
     listaCli = ttk.Treeview(frame_1, height=3, columns=("col1","col2","col3"))
@@ -156,7 +192,13 @@ def iniciar():
     listaCli.configure(yscroll=scroolLista.set)
     scroolLista.place(relx=0.96, rely=0.025, relwidth=0.04, relheight=0.95)
     
+ 
+   
+   
+   
+   
     Tela_1.mainloop()
+    
 def insert_manual():
     #Variáveis
     global lista
@@ -181,6 +223,9 @@ def insert_manual():
         print(l)
         for (i,d,v) in lista_tree:
             listaCli_2.insert("", "end", values=(i,d,v))
+        cod_entry.delete(0,"end")
+        desc_entry.delete(0,"end")
+        valor_entry.delete(0,"end")
     def alterar():
         global lista
         global cod_entry
@@ -199,6 +244,13 @@ def insert_manual():
         listaCli_2.delete(*listaCli_2.get_children())
         for (i,d,v) in lista:
             listaCli_2.insert("", "end", values=(i,d,v))
+        cod_entry.delete(0,"end")
+        desc_entry.delete(0,"end")
+        valor_entry.delete(0,"end")
+    def apagar():
+        global lista
+        lista=[]
+        listaCli_2.delete(*listaCli_2.get_children())
     #Tela2
     Tela_2 = Tk()
     Tela_2.title("Inserir Dados Manual")
@@ -208,7 +260,7 @@ def insert_manual():
     Tela_2.maxsize(width=480, height=480)
     Tela_2.minsize(width=333 , height=333)
     #Widgets
-    bt_salvar = Button(Tela_2, text='Salvar')
+    bt_salvar = Button(Tela_2, text='Apagar',command=apagar)
     bt_salvar.place(relx=0.025, rely=0.875,relwidth=0.2,relheight=0.1)
     bt_sair = Button(Tela_2, text='Sair', command=Tela_2.destroy)
     bt_sair.place(relx=0.775, rely=0.875,relwidth=0.2,relheight=0.1)
@@ -249,6 +301,8 @@ def insert_manual():
     for (i,d,v) in lista:
         listaCli_2.insert("", "end", values=(i,d,v))
     Tela_2.mainloop()
+
+
 iniciar()    
 
     
