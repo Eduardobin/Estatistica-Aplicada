@@ -124,10 +124,11 @@ def iniciar():
             for i in txtbd:
                 L1.append(i.rstrip())
             for i in L1:
-                i = i.split(",")
+                i = i.split(";")
                 L2 = i
                 L3.append(L2)
                 print('tamanho',len(L2))
+                print('l3: ',L3)
             if len(L2)==3:
                 L2=[]
                 for i in L3:
@@ -142,13 +143,16 @@ def iniciar():
                 print('lista: ',lista)
             else:
                 cont=1
+                L2=[]
                 for i in L3:
                     for m in i:
+                        L2=[]
                         print('xxx: ',m)
-                        lista.append(cont) 
-                        lista.append('')
-                        lista.append(int(m))
+                        L2.append(cont) 
+                        L2.append('')
+                        L2.append(int(m))
                         cont+=1
+                        lista.append(L2)
                 print('lista: ',lista)
 
 

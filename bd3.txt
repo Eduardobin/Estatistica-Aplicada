@@ -1,5 +1,5 @@
-1,mercado,1000
-2,agua; luz e net,500
-3,aluguel,1500
-4,lazer,600
-5,cartão de crédito,1200
+1;mercado;1000
+2;agua, luz e net;500
+3;aluguel;1500
+4;lazer;600
+5;cartão de crédito;1200
