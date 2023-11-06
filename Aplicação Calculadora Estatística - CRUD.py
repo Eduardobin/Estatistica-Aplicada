@@ -1,8 +1,10 @@
+from math import log
 from tkinter import *
 from tkinter import ttk
 import os
 import os.path
 import re
+from tkinter import filedialog
 # Variáveis Globais
 cod_entry = ""
 desc_entry = ""
@@ -79,6 +81,13 @@ def dist_freq():
     for i in newlista:
         if i > outup or i < outdown:
             dados_out.append(i)
+    #Aula2
+    if tamanho<100:
+        quant_linhas = tamanho**(1/2)
+    else:
+        quant_linhas = 1+3.33*log(tamanho)
+    tamanho_classe = amplitude/quant_linhas
+
 #moda autoral
     moda=[]
     x=0
@@ -92,16 +101,32 @@ def dist_freq():
         elif x == y:
             if i not in moda:
                 moda.append(i)
+    
+    #motando gráfico
+    #agrupamentos
+    membros=int(tamanho/tamanho_classe)
+    c=0
+    cc=1
+    variaveis_criadas=[]
+    for i in newlista:
+        exec("membros"+cc+"=[]")
+        variaveis_criadas.append()
+        while c<membros:
+            
     print('lista ordenada: ',newlista)
-    print(media)
-    print(maximo)
-    print(minimo)
-    print(amplitude)
-    print(quartis1)
-    print(mediana)
-    print(quartis3)
+    print("Tamanho da Lista= ",tamanho)
+    print("Média= ",media)
+    print("Máximo= ",maximo)
+    print("Mínimo= ",minimo)
+    print("Amplitude= ",amplitude)
+    print("1º Quartil= ",quartis1)
+    print("Mediana= ",mediana)
+    print("3º Quartil= ",quartis3)
     print('dados fora: ',dados_out)
-    print(moda)
+    print("Moda= ",moda)
+    print(f"Quantidade de Linhas= {quant_linhas:.0f}")
+    print(f"Tamanho da classe= {tamanho_classe:.0f}")
+    print(membros)
 def iniciar():
     global lista
     global cod_entry 
@@ -116,7 +141,8 @@ def iniciar():
         global lista
         global local
         local = 'txt'
-        with open(f'bd3.txt','r') as txtbd:
+        arquivo = filedialog.askopenfilename(filetypes=[("Arquivo de Texto", "*.txt")])
+        with open(arquivo,'r') as txtbd:
             L1 = []
             L2 = []
             L3 = []

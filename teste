@@ -1,19 +1,47 @@
-#salvando no txt
-    with open(f'cad_obra.txt','a') as txtcadobra:
-        for z in obrascad:
-            if z == '':
-                z='-'
-            txtcadobra.write(f'{z},')
-        txtcadobra.write('\n')
-    with open(f'{nome_obra}/dados.txt','a') as txtdados:
-        for z in obrascad:
-            if z == '':
-                z='-'
-            txtdados.write(f'{z}, ')
-        txtdados.write('\n')
-    with open(f'{nome_obra}/gestores.txt', 'a') as txtgestores:
-        for z in gestores:
-            if z == '':
-                z = '-'
-            txtgestores.write(f'{z}, ')
-        txtgestores.write('\n')
+lista = [[1,'',100],[2,'',101],[3,'',100],[4,'',99],[5,'',95],[6,'',90],[7,'',99],[8,'',99],[9,'',96],[10,'',98],[11,'',102],[12,'',124],[13,'',112],[14,'',106],[15,'',108],[16,'',91],[17,'',90],[18,'',90],[19,'',96],[20,'',93],[21,'',102],[22,'',98],[23,'',103],[24,'',103],[25,'',93],[26,'',93],[27,'',92]]
+listord=[]
+L=len(lista)
+v=True
+m=0
+while L!=0:
+    y = lista[m]
+    for i in lista:
+        if y[2]<i[2]: 
+            y=i
+    for i in lista:
+        if y[2]>=i[2]:
+            v=True
+        else:
+            v=False
+            m+=1    
+    if v == True:        
+        lista.remove(y)
+        listord.append(y)
+        m=0
+    L=len(lista)
+print('lista ordenada = ', listord)
+lista = listord
+newlista=[]
+for v in lista:
+    newlista.append(v[2])
+tamanho=len(newlista)
+c=0
+t=0
+cc="1"
+membros=4
+variaveis_criadas=[]
+while c < tamanho:
+    exec("membros"+cc+"=[]")
+    variaveis_criadas.append(exec("membros"+cc))
+    for i in newlista:
+        if t < 4*int(cc) and t<tamanho:
+            str(cc)
+            break
+        break
+    print(variaveis_criadas)
+    break
+        
+
+
+
+
