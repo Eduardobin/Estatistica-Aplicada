@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from math import log
 from tkinter import *
 from tkinter import ttk
@@ -42,11 +43,13 @@ def pareto():
         L=len(lista)
     print('lista ordenada = ', listord)
     lista = listord
-################################    
     lr=[]
     lr2=[]
     soma=0
     p=0
+    legenda = []
+    for i in lista:
+        legenda.append(i[1])
     for i in lista:
         soma=soma+i[2]
     for i in lista:
@@ -54,6 +57,23 @@ def pareto():
         lr.append(r)
         p+=1
     print(lr)
+    r=0
+    for i in lr:
+       r+=i
+       lr2.append(r) 
+    print(lr2)
+    print (legenda)
+    plt.title("Análise de Pareto")
+    plt.xlabel("Descrição")
+    plt.ylabel("Percentual")
+    plt.bar(legenda,lr)
+    plt.plot(lr2)
+    plt.show()
+
+
+
+
+
 #Medidas e tabelas de distribuição de frequência [cod,str,num]
 def dist_freq():
     global lista
@@ -81,13 +101,11 @@ def dist_freq():
     for i in newlista:
         if i > outup or i < outdown:
             dados_out.append(i)
-    #Aula2
     if tamanho<100:
-        quant_linhas = tamanho**(1/2)
+        quant_linhas = round(tamanho**(1/2))
     else:
-        quant_linhas = 1+3.33*log(tamanho)
-    tamanho_classe = amplitude/quant_linhas
-
+        quant_linhas = round(1+3.33*log(tamanho))
+    tamanho_classe = round(amplitude/quant_linhas)
 #moda autoral
     moda=[]
     x=0
@@ -101,18 +119,53 @@ def dist_freq():
         elif x == y:
             if i not in moda:
                 moda.append(i)
-    
     #motando gráfico
     #agrupamentos
-    membros=int(tamanho/tamanho_classe)
-    c=0
-    cc=1
-    variaveis_criadas=[]
+    numSemRepticao =[]
     for i in newlista:
-        exec("membros"+cc+"=[]")
-        variaveis_criadas.append()
-        while c<membros:
-            
+        if i not in numSemRepticao:
+            numSemRepticao.append(i)
+    print ("lista sem repetiçaõ" , numSemRepticao)
+    i=[]
+    x=[]
+    y=[]
+    c=1
+    cc=0
+    m=1
+    i.append(minimo)
+    i.append("---")
+    i.append(minimo+tamanho_classe)
+    x.append(i)
+    for a in newlista:
+        if a >= i[0] and a <= i[2]:
+            cc+=1
+    y.append(cc)
+    while c<quant_linhas:
+        i=[]
+        cc=0
+        i.append(minimo+m*tamanho_classe+1)
+        i.append("---")
+        i.append(minimo+(m+1)*tamanho_classe)
+        x.append(i)
+        for a in newlista:
+            if a>=i[0] and a<=i[2]:
+                cc+=1
+        y.append(cc)
+        c+=1
+        m+=1
+    x2=[]
+    for i in x:
+        a=str(i[0])+str(i[1])+str(i[2])
+        x2.append(a)
+    y2=[]
+    for i in y:
+        a=round((i/tamanho)*100,2)
+        y2.append(a)    
+    plt.bar(x2,y2)
+    plt.title("Histograma")
+    plt.xlabel("Descrição")
+    plt.ylabel("Percentual")
+    plt.show()
     print('lista ordenada: ',newlista)
     print("Tamanho da Lista= ",tamanho)
     print("Média= ",media)
@@ -124,9 +177,13 @@ def dist_freq():
     print("3º Quartil= ",quartis3)
     print('dados fora: ',dados_out)
     print("Moda= ",moda)
-    print(f"Quantidade de Linhas= {quant_linhas:.0f}")
-    print(f"Tamanho da classe= {tamanho_classe:.0f}")
-    print(membros)
+    print(f"Quantidade de Linhas= {quant_linhas}")
+    print(f"Tamanho da classe= {tamanho_classe}")
+
+
+
+
+
 def iniciar():
     global lista
     global cod_entry 
@@ -180,11 +237,6 @@ def iniciar():
                         cont+=1
                         lista.append(L2)
                 print('lista: ',lista)
-
-
-
-
-
     #Tela1
     Tela_1 = Tk()
     Tela_1.title("Calculadora Estatística")
@@ -221,13 +273,17 @@ def iniciar():
     scroolLista = Scrollbar(frame_1, orient='vertical')
     listaCli.configure(yscroll=scroolLista.set)
     scroolLista.place(relx=0.96, rely=0.025, relwidth=0.04, relheight=0.95)
-    
- 
-   
-   
-   
-   
     Tela_1.mainloop()
+
+def tela_pareto():
+    telaPareto=Tk()
+    telaPareto.title("Calculadora Estatística")
+    telaPareto.configure(background='#1e3743')
+    telaPareto.geometry("700x600")
+    telaPareto.resizable(True,True)
+    telaPareto.maxsize(width=840, height=720)
+    telaPareto
+    .minsize(width=583 , height=500)
     
 def insert_manual():
     #Variáveis
@@ -331,8 +387,6 @@ def insert_manual():
     for (i,d,v) in lista:
         listaCli_2.insert("", "end", values=(i,d,v))
     Tela_2.mainloop()
-
-
 iniciar()    
 
     
